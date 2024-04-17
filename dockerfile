@@ -1,15 +1,23 @@
-# Use the base image
-FROM devopsedu/webapp:latest
+FROM devopsedu/webapp
 
-# Copy PHP website files into the container
-COPY php-website /var/www/html/
+RUN apt-get update -y
+#RUN apt-get install -y apache2
+#Install PHP Modules
+#RUN apt-get install -y php7.0 libapache2-mod-php7.0 php7.0-cli php7.0-common php7.0-mbstring php7.0-gd php7.0-intl php7.0-xml php7.0-mysql php7.0-mcrypt php7.0-zip
 
-# Expose port if necessary (if your PHP application requires a specific port)
-# EXPOSE 80
+#Copy Application Files
+RUN rm -rf /var/www/html/*
+COPY website /var/www/html/
 
-# Set any environment variables if needed
-# ENV KEY=value
+#Open port 80
+EXPOSE 8080
+EXPOSE 80
 
-# Command to run the PHP server
-# CMD ["command", "arg1", "arg2"]
+#Start Apache service
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
+# Start Selenium Test
+# COPY selenium-server-standalone-3.14.0.jar /tmp
+# RUN nohup java -jar /tmp/selenium-server-standalone-3.14.0.jar &
+
+# CMD ["/bin/bash"]
