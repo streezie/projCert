@@ -1,0 +1,30 @@
+#install and configure puppet agent on slave node (job1)
+#First, run the following command to download the release package:
+wget https://apt.puppetlabs.com/puppet6-release-focal.deb
+#Then, run the following command to install the release package as sudo:
+sudo dpkg -i puppet6-release-focal.deb
+#Then, let’s update the apt package lists:
+sudo apt-get update
+sudo apt-get install puppet-agent -y
+#configure the puupet agent
+sudo nano /etc/hosts
+#add the below server detail to your /etc/hosts path
+10.0.2.15 puppetmaster >> /etc/hosts
+192.168.2.2 puppetclient >> /etc/hosts
+#Then, on the agent machine, open the agent configuration file using your preferred text editor. 
+sudo nano /etc/puppetlabs/puppet/puppet.conf
+#Then, add the following lines to the file:
+[main] >> /etc/puppetlabs/puppet/puppet.conf
+certname = puppetclient >> /etc/puppetlabs/puppet/puppet.conf
+server = puppet >> /etc/puppetlabs/puppet/puppet.conf
+#Run the agent for the first time
+#On the server node, execute the following command to list the available certificates:
+sudo /opt/puppetlabs/bin/puppetserver ca list --all
+#Finally, execute the following command to sign all certificates:
+sudo /opt/puppetlabs/bin/puppetserver ca sign --all
+#Your configuration is done. It’s time to finally run the agent:
+sudo systemctl start puppet
+sudo systemctl enable puppet
+sudo systemctl status puppet
+#Finally, you can check whether the setup is working as expected:
+sudo /opt/puppetlabs/bin/puppet agent --test
