@@ -1,0 +1,4 @@
+#JOB 1
+#Push an Ansible configuration on test server to install docker (Job 2)
+cd  projCert/
+ansible-playbook -i playbook.yaml

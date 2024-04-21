@@ -1,0 +1,22 @@
+#JOB 3
+#Pull the PHP website, and the Dockerfile from the git repo and build and deploy your PHP
+
+---
+cd projCert
+sudo build -t PHPwebsite:v1 .
+Sudo run -it -p 8082:80 -d PHPwebsite:v1
+
+
+
+
+---
+containers=$(docker ps -a -q)
+if [ -n "$containers" ]; then
+    docker stop $containers
+fi
+
+containers=$(docker ps -a -q)
+if [ -n "$containers" ]; then
+    docker rm -f -v $containers
+fi
+
